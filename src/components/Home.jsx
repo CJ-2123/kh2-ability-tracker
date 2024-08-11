@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Tracker from "./Tracker.jsx";
 import actions from "../data/action.js";
 import supports from "../data/support.js";
+import Tracker from "./Tracker.jsx";
 
 function Home() {
   const [selectedActions, setSelectedActions] = useState([]);
@@ -25,19 +25,17 @@ function Home() {
 
   const combinedSelections = [...selectedActions, ...selectedSupports];
 
-  //   // Open popout window for hints
-  //   const handleOpenPopout = () => {
-  //     const popoutWindow = window.open(
-  //       "#/tracker",
-  //       "_blank",
-  //       "toolbar=no,resizeable=yes,width=275,height=625"
-  //     );
-
-  //     // Pass the combined selections to the popout window
-  //     popoutWindow.onload = () => {
-  //       popoutWindow.combinedSelections = combinedSelections;
-  //     };
-  //   };
+  const handleOpenPopout = () => {
+    sessionStorage.setItem(
+      "combinedSelections",
+      JSON.stringify(combinedSelections)
+    );
+    window.open(
+      `${window.location.origin}/#/tracker`,
+      "_blank",
+      "toolbar=no,resizeable=yes,width=300,height=625"
+    );
+  };
 
   return (
     <div>
@@ -99,9 +97,9 @@ function Home() {
           >
             <h2>Tracker</h2>
             <Tracker combinedSelections={combinedSelections} />
-            {/* <button className="popout-button" onClick={handleOpenPopout}>
-              Popout Hints
-            </button> */}
+            <button className="popout-button" onClick={handleOpenPopout}>
+              Popout Tracker
+            </button>
           </div>
         </div>
       </div>

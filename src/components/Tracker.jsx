@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import locations from "../data/locations.js";
 
-function Tracker({ combinedSelections }) {
-  const [inputValues, setInputValues] = useState(
-    combinedSelections.map(() => "")
-  );
-  const [suggestions, setSuggestions] = useState(
-    combinedSelections.map(() => [])
-  );
+function Tracker({ combinedSelections: propsSelections }) {
+  const [combinedSelections, setCombinedSelections] = useState([]);
+  const [inputValues, setInputValues] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestion, setActiveSuggestion] = useState(null);
 
-  //   useEffect(() => {
-  //     if (window.opener && window.opener.combinedSelections) {
-  //       setInputValues(window.opener.combinedSelections);
-  //       setSuggestions(window.opener.combinedSelections.map(() => []));
-  //     }
-  //   }, []);
+  useEffect(() => {
+    if (propsSelections && propsSelections.length > 0) {
+      setCombinedSelections(propsSelections);
+    } else {
+      const storedSelections = JSON.parse(
+        sessionStorage.getItem("combinedSelections")
+      );
+      if (storedSelections) {
+        setCombinedSelections(storedSelections);
+      }
+    }
+    setInputValues((propsSelections || []).map(() => ""));
+    setSuggestions((propsSelections || []).map(() => []));
+  }, [propsSelections]);
 
   function handleInputChange(event, index) {
     const { value } = event.target;
@@ -79,7 +84,7 @@ function Tracker({ combinedSelections }) {
       {combinedSelections.map((selection, index) => (
         <div className="hint-item" key={index}>
           <span>{selection}</span>
-          <br></br>
+          <br />
           <input
             type="text"
             value={inputValues[index]}
