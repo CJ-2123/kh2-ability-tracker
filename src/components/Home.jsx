@@ -31,7 +31,7 @@ function Home() {
       JSON.stringify(combinedSelections)
     );
     window.open(
-      `${window.location.origin}/#/tracker`,
+      `#/tracker`,
       "_blank",
       "toolbar=no,resizeable=yes,width=300,height=625"
     );
